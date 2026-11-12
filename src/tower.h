@@ -35,9 +35,12 @@ class Tower {
     int rateOfFire;
     bool bAutoFire;
 
-    void FireAtEnemy(const std::vector<Enemy*>& enemies,
-                     std::vector<Bullet>& bullets);
+    void FireAtEnemy(const std::vector<Enemy*>& enemies,std::vector<Bullet>& bullets);
     void FireBulletAtEnemy(Enemy& enemy, std::vector<Bullet>& bullets);
+
+    static int CalculateDistance(const Vector2D& a, const Vector2D& b);
+    Enemy* FindClosestEnemy(const std::vector<Enemy*>& enemies, bool onlyOnFiringLine) const;
+    bool IsOnFiringLine(const Vector2D& target) const;
 };
 
 #endif  // TOWER_H

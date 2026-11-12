@@ -2,6 +2,7 @@
 
 #include "logger.h"
 
+#include<chrono>
 #include <iomanip>
 #include <iostream>
 #include <thread>
@@ -24,6 +25,12 @@ Logger::~Logger() {
     }
 
 }
+
+void Logger::Log(const std::string& message)
+{}
+
+void Logger::Flush()
+{}
 
 void Logger::ProcessLogs() {
     while (true) {

@@ -17,7 +17,17 @@ class Logger {
    public:
     static Logger& GetInstance();
 
+    //No copy cause its singleton
+    Logger(const Logger&) = delete;
+    Logger& operator=(const Logger&) = delete;
+    Logger(Logger&&) = delete;
+    Logger& operator=(Logger&&) = delete;
+
     ~Logger();
+
+    void Log(const std::string& message);
+    void Flush();
+
 
    private:
     Logger();
