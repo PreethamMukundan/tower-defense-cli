@@ -2,10 +2,11 @@
 
 #include "logger.h"
 
-#include<chrono>
+#include <chrono>
+#include <ctime>
 #include <iomanip>
 #include <iostream>
-#include <thread>
+#include <sstream>
 
 Logger& Logger::GetInstance() {
     static Logger instance;
@@ -27,10 +28,24 @@ Logger::~Logger() {
 }
 
 void Logger::Log(const std::string& message)
-{}
+{
+    {
+        std::lock_guard<std::mutex> lock(queueMutex);
+        if (exitFlag) {
+            return;  // shutting down: nothing will write it
+        }
+        // Timestamp taken under the lock so file order and time order agree.
+        logQueue.push_back(GetCurrentTimestamp() + " " + message);
+    }
+    workAvailable.notify_one();
+}
 
 void Logger::Flush()
-{}
+{
+    std::unique_lock<std::mutex> lock(queueMutex);
+    // Done when nothing is queued AND the worker isn't mid-batch.
+    queueDrained.wait(lock, [this] { return logQueue.empty() && !writing; });
+}
 
 void Logger::ProcessLogs() {
     while (true) {

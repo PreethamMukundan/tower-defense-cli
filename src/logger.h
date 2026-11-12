@@ -3,10 +3,12 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
+#include <condition_variable>
 #include <fstream>
-#include <vector>
+#include <mutex>
 #include <string>
 #include <thread>
+#include <vector>
 
 // Implement the following methods:
 // Log
@@ -16,6 +18,7 @@
 class Logger {
    public:
     static Logger& GetInstance();
+
 
     //No copy cause its singleton
     Logger(const Logger&) = delete;
@@ -28,14 +31,17 @@ class Logger {
     void Log(const std::string& message);
     void Flush();
 
-
    private:
     Logger();
 
-    std::ofstream logFile;
+    std::ofstream logFile;                  // touched only by the worker thread
+    std::mutex queueMutex;                  // guards everything below it
+    std::condition_variable workAvailable;  // worker waits on this
+    std::condition_variable queueDrained;   // Flush() waits on this
+    std::vector<std::string> logQueue;      // lines waiting to be written
+    bool exitFlag = false;                  // set by the destructor
+    bool writing = false;                   // worker is writing a batch
     std::thread logThread;
-    std::vector<std::string> logQueue;
-    bool exitFlag = false;
 
     void ProcessLogs();
     std::string GetCurrentTimestamp();

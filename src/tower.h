@@ -28,8 +28,7 @@ class Tower {
 
     bool GetAutoFire() const;
     void SetAutoFire(bool autoFire);
-    void ManualFire(std::vector<Enemy*> enemies,
-                    std::vector<Bullet>& bullets);
+    void ManualFire(std::vector<Enemy*> enemies,std::vector<Bullet>& bullets);
 
    private:
     int rateOfFire;
