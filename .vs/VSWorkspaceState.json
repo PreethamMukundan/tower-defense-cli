@@ -1,0 +1,19 @@
+{
+  "OutputFoldersPerTargetSystem": {
+    "Local Machine": [
+      "build\\Debug-Windows",
+      "build\\Release-Windows",
+      "build\\Debug-macOS-Intel",
+      "build\\Release-macOS-Intel",
+      "build\\Debug-macOS-AppleSilicon",
+      "build\\Release-macOS-AppleSilicon",
+      "build\\Debug-Ubuntu",
+      "build\\Release-Ubuntu"
+    ]
+  },
+  "ExpandedNodes": [
+    ""
+  ],
+  "SelectedNode": "\\CMakeLists.txt",
+  "PreviewInSolutionExplorer": false
+}
